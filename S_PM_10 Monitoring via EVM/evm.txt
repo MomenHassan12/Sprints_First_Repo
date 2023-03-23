@@ -1,0 +1,35 @@
+over budget
+
+behind :3 month
+
+
+Earned Value (EV) = Budgeted Cost of Work Completed (BCWP)
+EV = 500 + 300 = 800
+Actual Cost (AC) = Budgeted Cost of Work Performed (BCWP)
+AC = 600 + 1200 + 400 + 1200 + 300 = 3700
+CV = EV - AC
+CV = 800 - 3700
+CV = -2900
+
+
+Planned Value (PV) = Budgeted Cost of Work Scheduled (BCWS)
+PV = 600 + 1200 + 400 + 1200 + 300 = 2700
+SV = EV - PV
+SV = 800 - 2700
+SV = -1900
+
+
+SPI = EV / PV
+SPI = 800 / 2700
+SPI = 0.30
+
+CPI = EV / AC
+CPI = 800 / 3700
+CPI = 0.22
+
+
+EAC = AC + (BAC - EV) / CPI
+BAC = 2700 + 300 = 3000 (assuming $300 for the final activity)
+EAC = 3700 + (3000 - 800) / 0.22
+EAC = 22364.29
+

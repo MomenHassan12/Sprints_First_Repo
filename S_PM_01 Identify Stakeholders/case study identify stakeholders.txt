@@ -1,0 +1,5 @@
+1-customer:places where services with discounts are porvided
+2-Team members:who will develope the App
+3-Project management
+4- Google map 
+5-Project Sponser
