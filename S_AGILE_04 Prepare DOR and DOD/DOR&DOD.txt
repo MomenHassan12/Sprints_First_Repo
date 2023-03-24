@@ -1,0 +1,16 @@
+Definition of Done:
+
+All acceptance criteria have been met
+Code is fully tested, including unit tests, integration tests, and system tests
+Code has been reviewed and approved by at least one other team member
+Code is integrated and deployed to the testing environment
+Documentation has been updated, including user manuals and technical documentation
+Code is compliant with coding standards and best practices
+Definition of Ready:
+
+User story has been reviewed by the Product Owner and stakeholders
+User story is clear, concise, and unambiguous
+Acceptance criteria have been defined and agreed upon by the team
+All dependencies have been identified and are available
+Appropriate design and architectural decisions have been made
+Necessary resources, such as data and tools, are available for implementation

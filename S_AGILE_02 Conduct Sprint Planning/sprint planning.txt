@@ -1,0 +1,8 @@
+During Sprint Planning Meeting
+
+1-Set a fixed time for the follow-up meeting to review the progress of the sprint and discuss any issues or blockers that have arisen. The follow-up meeting is scheduled for , and all team members are expected to attend.
+2-Assigning specific user stories to team members for implementation
+3-Agreeing on the definition of done for each user story
+4-Setting a stretch goal for the sprint
+5-Identifying any dependencies or risks that may impact the sprint's success
+6-Finalizing the sprint timeline and determining any necessary adjustments to the team's capacity or velocity.
