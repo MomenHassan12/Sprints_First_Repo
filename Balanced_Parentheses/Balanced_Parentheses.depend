@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1679979552 source:e:\balanced_parentheses\balanced_parentheses.c
+	"Balanced_Parentheses.h"
+
+1679969372 e:\balanced_parentheses\balanced_parentheses.h
+	"Stack.h"
+
+1679964009 e:\balanced_parentheses\stack.h
+	"STD_TYPES.h"
+
+1679962252 e:\balanced_parentheses\std_types.h
+
+1679975192 source:e:\balanced_parentheses\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Balanced_Parentheses.h"
+
+1679964022 source:e:\balanced_parentheses\stack.c
+	"Stack.h"
+

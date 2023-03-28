@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1679896909 source:e:\xo_game_board\main.c
+	<stdio.h>
+	"xo_Game_board.h"
+
+1679896730 source:e:\xo_game_board\xo_game_board.c
+	"xo_Game_board.h"
+
+1679897334 e:\xo_game_board\xo_game_board.h
+	"STD_TYPES.h"
+	<stdio.h>
+	<string.h>
+
+1679962285 e:\xo_game_board\std_types.h
+
