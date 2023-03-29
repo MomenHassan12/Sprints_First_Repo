@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1680116870 source:e:\lcs\lcs.c
+	"LCS.h"
+
+1680071106 source:e:\lcs\main.c
+	"LCS.h"
+	"LCS.h"
+
+1680116606 source:e:\lcs\sort.c
+	"sort.h"
+
+1680068727 e:\lcs\sort.h
+	"STD_TYPES.h"
+
+1680056540 e:\lcs\std_types.h
+
+1680116208 e:\lcs\lcs.h
+	"sort.h"
+
