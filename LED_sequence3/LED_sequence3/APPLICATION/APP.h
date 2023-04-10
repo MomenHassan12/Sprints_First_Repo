@@ -1,0 +1,33 @@
+/*
+ * APP.h
+ *
+ * Created: 4/5/2023 9:26:16 AM
+ *  Author: Speed
+ */ 
+
+
+#ifndef APP_H_
+#define APP_H_
+#define F_CPU	16000000UL
+
+#include "../ECUAL/Button_Driver/Button.h"
+#include "../ECUAL/LED_Driver/LED.h"
+#include "../MCAL/EXT_INT/EXT_INT.h"
+#include "../MCAL/TIMER/TIMER.h"
+
+void APP_initModules(void);
+
+
+void APP_ledSequenceV_3 (void);
+
+void APP_ledUnitTesting (void);
+void button_0_Task (uint8_t* counter, uint8_t state);
+void button_1_Task(void);
+void sysTickTask(void);
+
+void APP_timersUnitTesting (void);
+
+
+
+
+#endif /* APP_H_ */
