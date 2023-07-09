@@ -74,6 +74,9 @@
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
 TaskHandle_t LedTask_Handler=NULL;
+#define TASK_PERIODICITY_1 100
+#define TASK_PERIODICITY_2 500
+#define TASK_PERIODICITY_3 1000
 
 
 /*
@@ -89,9 +92,9 @@ static void prvSetupHardware( void );
 		 for(;;)
 		 {
 			 GPIO_write(PORT_0,PIN1,PIN_IS_HIGH);
-			 vTaskDelay(100);
+			 vTaskDelay(TASK_PERIODICITY_1);
 			 GPIO_write(PORT_0,PIN1,PIN_IS_LOW);
-			 vTaskDelay(100);
+			 vTaskDelay(TASK_PERIODICITY_1);
 
 		 }
 	 }
@@ -102,9 +105,9 @@ static void prvSetupHardware( void );
 		 for(;;)
 		 {
 			 GPIO_write(PORT_0,PIN2,PIN_IS_HIGH);
-			 vTaskDelay(500);
+			 vTaskDelay(TASK_PERIODICITY_2);
 			 GPIO_write(PORT_0,PIN2,PIN_IS_LOW);
-			 vTaskDelay(500);
+			 vTaskDelay(TASK_PERIODICITY_2);
 
 		 }
 	 }
@@ -114,9 +117,9 @@ static void prvSetupHardware( void );
 		 for(;;)
 		 {
 			 GPIO_write(PORT_0,PIN3,PIN_IS_HIGH);
-			 vTaskDelay(1000);
+			 vTaskDelay(TASK_PERIODICITY_3);
 			 GPIO_write(PORT_0,PIN3,PIN_IS_LOW);
-			 vTaskDelay(1000);
+			 vTaskDelay(TASK_PERIODICITY_3);
 
 		 }
 	 }

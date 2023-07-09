@@ -75,7 +75,7 @@
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
 TaskHandle_t LedTask_Handler=NULL;
 
-
+#define TASK_PERIODICITY 1000
 /*
  * Configure the processor for use with the Keil demo board.  This is very
  * minimal as most of the setup is managed by the settings in the project
@@ -89,9 +89,9 @@ static void prvSetupHardware( void );
 		 for(;;)
 		 {
 			 GPIO_write(PORT_0,PIN1,PIN_IS_HIGH);
-			 vTaskDelay(1000);
+			 vTaskDelay(TASK_PERIODICITY);
 			 GPIO_write(PORT_0,PIN1,PIN_IS_LOW);
-			 vTaskDelay(1000);
+			 vTaskDelay(TASK_PERIODICITY);
 
 		 }
 	 }

@@ -74,7 +74,14 @@
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
 TaskHandle_t LedTask_Handler=NULL;
-
+#define BTN_TASK_PERIODICITY 50
+#define LED_TASK_LONG_PRESS 100
+#define LED_TASK_SMALL_PRESS 100
+#define LED_TASK_MEDIUM_PRESS 400
+#define TWO_SECOUND 40
+#define FOUR_SECOUND 80
+#define FLAG_RELEASED 0
+#define FLAG_SET 1
 
 /*
  * Configure the processor for use with the Keil demo board.  This is very
@@ -83,9 +90,10 @@ TaskHandle_t LedTask_Handler=NULL;
  */
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
-static int flag=0;
-static int counter=0;
-static int check=0;
+static int flag=FLAG_RELEASED;
+static int counter=FLAG_RELEASED;
+static int check=FLAG_RELEASED;
+
 void btn_Task1 (void *pvParameter)
 	 {
 		 
@@ -94,11 +102,11 @@ void btn_Task1 (void *pvParameter)
 		if(PIN_IS_HIGH==GPIO_read(PORT_0,PIN0))
 		{
 	counter++;
-			vTaskDelay(50);
-			check=1;
+			vTaskDelay(BTN_TASK_PERIODICITY);
+			check=FLAG_SET|;
 		}
 		else{
-			check=0; 
+			check=FLAG_RELEASED; 
 		}
 	 }
  }
@@ -107,33 +115,33 @@ void btn_Task1 (void *pvParameter)
 	
 			 for(;;)
 		 {
-			 if(check==1)
+			 if(check==FLAG_SET)
 			 {
 		flag=counter;
 
 			 } 
-			 if(check==0){
-			 if((40<flag)&&(flag<80))
+			 if(check==FLAG_RELEASED){
+			 if((TWO_SECOUND<flag)&&(flag<FOUR_SECOUND))
 			 {
 			 GPIO_write(PORT_0,PIN2,PIN_IS_HIGH);
-			 vTaskDelay(400);
+			 vTaskDelay(LED_TASK_MEDIUM_PRESS);
 			 GPIO_write(PORT_0,PIN2,PIN_IS_LOW);
-			 vTaskDelay(400);
-				 			counter=0;
+			 vTaskDelay(LED_TASK_MEDIUM_PRESS);
+				 			counter=FLAG_RELEASED;
 
-			 }else if(80<flag)
+			 }else if(FOUR_SECOUND<flag)
 			 {
 				 	 GPIO_write(PORT_0,PIN2,PIN_IS_HIGH);
-			 vTaskDelay(100);
+			 vTaskDelay(LED_TASK_LONG_PRESS);
 			 GPIO_write(PORT_0,PIN2,PIN_IS_LOW);
-			 vTaskDelay(100);
-			counter=0;
+			 vTaskDelay(LED_TASK_LONG_PRESS);
+			counter=FLAG_RELEASED;
 
-			 }else if (flag<40)
+			 }else if (flag<TWO_SECOUND)
 			 {
 			 GPIO_write(PORT_0,PIN2,PIN_IS_LOW);
-						 vTaskDelay(100);
-			counter=0;
+						 vTaskDelay(LED_TASK_SMALL_PRESS);
+			counter=FLAG_RELEASED;
 
 			 }
 		 }
