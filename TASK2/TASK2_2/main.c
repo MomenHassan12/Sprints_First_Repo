@@ -72,6 +72,16 @@
 
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
+#define UART_TASK_1_PERIODICITY 100
+#define UART_TASK_2_PERIODICITY 500
+#define MUTEX_UART_TASK1_TIME 20
+#define MUTEX_UART_TASK2_TIME 10
+
+#define COUNTER_RELEASED 0
+#define COUNTER_MAX 10
+#define HEAVY_LOAD 100000
+#define MESSAGE_SIZE 35
+
 TaskHandle_t LedTask_Handler=NULL;
 
 SemaphoreHandle_t xSemaphore=NULL;
@@ -91,15 +101,15 @@ void UART_Task1 (void *pvParameter)
 		 	   int j;
 
 for(;;) {
-			if(xSemaphoreTake( xSemaphore, 20)==pdTRUE)
+			if(xSemaphoreTake( xSemaphore, MUTEX_UART_TASK1_TIME)==pdTRUE)
 					{
     // Write to UART 10 times
-    for (i = 0; i < 10; i++) {
-				while (vSerialPutString(message, 35) == pdFALSE);
+    for (i = COUNTER_RELEASED; i < COUNTER_MAX; i++) {
+				while (vSerialPutString(message, MESSAGE_SIZE) == pdFALSE);
 		}
 			xSemaphoreGive( xSemaphore );
 					}
-				vTaskDelay(100);  		
+				vTaskDelay(UART_TASK_1_PERIODICITY);  		
 		
  }
  
@@ -117,12 +127,12 @@ for(;;) {
   for(;;) {
 
     // Write to UART 10 times
-  	if(xSemaphoreTake( xSemaphore, 10)==pdTRUE)
+  	if(xSemaphoreTake( xSemaphore, MUTEX_UART_TASK2_TIME)==pdTRUE)
 		{
-		for ( k = 0; k < 10; k++) {
-while(vSerialPutString(message, 35) == pdFALSE);
+		for ( k = COUNTER_RELEASED; k < COUNTER_MAX; k++) {
+while(vSerialPutString(message, MESSAGE_SIZE) == pdFALSE);
  // Simulate heavy load
-	for(j = 0; j < 100000; j++)
+	for(j = COUNTER_RELEASED; j < HEAVY_LOAD; j++)
 				{
 
 }
@@ -134,7 +144,7 @@ while(vSerialPutString(message, 35) == pdFALSE);
    
 }
 	
-				 vTaskDelay(500);   
+				 vTaskDelay(UART_TASK_2_PERIODICITY);   
  }
 	 }
 

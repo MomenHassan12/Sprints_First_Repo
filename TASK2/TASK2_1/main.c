@@ -72,6 +72,14 @@
 
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
+#define BTN_TASK_PERIODICITY 50
+#define LED_TASK_PERIODICITY 100
+#define MUTEX_TASK1_TIME 10
+#define MUTEX_TASK2_TIME 30
+
+#define FLAG_RELEASED 0
+#define FLAG_SET 1
+
 TaskHandle_t LedTask_Handler=NULL;
 
 SemaphoreHandle_t xSemaphore=NULL;
@@ -82,9 +90,9 @@ SemaphoreHandle_t xSemaphore=NULL;
  */
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
-static int flag=0;
-static int check=0;
-static int btn_state=0;
+static int flag=FLAG_RELEASED;
+static int check=FLAG_RELEASED;
+static int btn_state=FLAG_RELEASED;
 
 void btn_Task (void *pvParameter)
 	 {
@@ -93,25 +101,25 @@ void btn_Task (void *pvParameter)
 		
 		if(PIN_IS_HIGH==GPIO_read(PORT_0,PIN0))
 		{
-			flag=1;
+			flag=FLAG_SET;
 	
 		}else if((PIN_IS_LOW==GPIO_read(PORT_0,PIN0))&&(flag==1))
 	{
-	 flag=0;
-		check=1;
+	 flag=FLAG_RELEASED;
+		check=FLAG_SET;
 
-  }else if(check==1) {
-		if(xSemaphoreTake( xSemaphore, 10)==pdTRUE)
+  }else if(check==FLAG_SET) {
+		if(xSemaphoreTake( xSemaphore, MUTEX_TASK1_TIME)==pdTRUE)
 		{
-		btn_state=1;
+		btn_state=FLAG_SET;
 		xSemaphoreGive( xSemaphore );
-		check=0;
+		check=FLAG_RELEASED;
 		
 		}
 	
 	
 	}
-			 vTaskDelay(50);
+			 vTaskDelay(BTN_TASK_PERIODICITY);
 	 }
  }
 	  void led_Task (void *pvParameter)
@@ -119,18 +127,18 @@ void btn_Task (void *pvParameter)
 	
 			 for(;;)
 		 {
-		 if(btn_state==1)
+		 if(btn_state==FLAG_SET)
 				 {
-			 		if(xSemaphoreTake( xSemaphore, 30)==pdTRUE)
+			 		if(xSemaphoreTake( xSemaphore, MUTEX_TASK2_TIME)==pdTRUE)
 					{
 		    	 GPIO_toggle(PORT_0,PIN2);
-	         btn_state=0;
+	         btn_state=FLAG_RELEASED;
 				   xSemaphoreGive( xSemaphore );
 					}
 			
 	 }	
 	 
-				 vTaskDelay(100);
+				 vTaskDelay(LED_TASK_PERIODICITY);
  
 	 }
 	 }

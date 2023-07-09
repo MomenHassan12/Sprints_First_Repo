@@ -80,6 +80,15 @@
 
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
+#define BTN_1_TASK_PERIODICITY 50
+#define BTN_2_TASK_PERIODICITY 50
+#define PERIODIC_TASK_PERIODICITY 100
+#define CONSUMER_TASK_PERIODICITY 100
+#define MESSAGE_SIZE 17
+#define FLAG_RELEASED 0
+#define FLAG_SET 1
+#define PDMS_TICKS 100
+#define FIRST_LOCATION 0
 TaskHandle_t LedTask_Handler=NULL;
 EventGroupHandle_t  eventGroup;
 QueueHandle_t mailbox;
@@ -94,8 +103,8 @@ static void prvSetupHardware( void );
  
 // Button task 1
 void buttonTask1(void *pvParameters) {
-  pinState_t lastState = 0;
-  pinState_t currentState=0;
+  pinState_t lastState = FLAG_RELEASED;
+  pinState_t currentState=FLAG_RELEASED;
  for(;;) {
 
 
@@ -103,19 +112,19 @@ void buttonTask1(void *pvParameters) {
    currentState = GPIO_read(PORT_0,PIN0);
 
     // Check for rising edge
-    if (currentState == 1 && lastState == 0) {
+    if (currentState == FLAG_SET && lastState == FLAG_RELEASED) {
       // Send rising edge event to consumer task
       xEventGroupSetBits(eventGroup, EVENT_BUTTON_1_RISING);
     }
 
     // Check for falling edge
-    if (currentState == 0 && lastState == 1) {
+    if (currentState == FLAG_RELEASED && lastState == FLAG_SET) {
       // Send falling edge event to consumer task
       xEventGroupSetBits(eventGroup, EVENT_BUTTON_1_FALLING);
     }
 
     lastState = currentState;
-      vTaskDelay(50);
+      vTaskDelay(BTN_1_TASK_PERIODICITY);
 
 	}
 }
@@ -123,8 +132,8 @@ void buttonTask1(void *pvParameters) {
 	  // Button task 2
 void buttonTask2(void *pvParameters) {
 
- pinState_t lastState = 0;
-	pinState_t currentState=0;
+ pinState_t lastState = FLAG_RELEASED;
+	pinState_t currentState=FLAG_RELEASED;
   for(;;) {
     // Simulate button state change
 
@@ -132,25 +141,25 @@ void buttonTask2(void *pvParameters) {
      currentState = GPIO_read(PORT_0,PIN1);
 
     // Check for rising edge
-    if (currentState == 1 && lastState == 0) {
+    if (currentState == FLAG_SET && lastState == FLAG_RELEASED) {
       // Send rising edge event to consumer task
       xEventGroupSetBits(eventGroup, EVENT_BUTTON_2_RISING);
     }
 
     // Check for falling edge
-    if (currentState == 0 && lastState == 1) {
+    if (currentState == FLAG_RELEASED && lastState == FLAG_SET) {
       // Send falling edge event to consumer task
       xEventGroupSetBits(eventGroup, EVENT_BUTTON_2_FALLING);
     }
 
     lastState = currentState;
-    vTaskDelay(50);
+    vTaskDelay(BTN_2_TASK_PERIODICITY);
  
 	}
 }
 // Periodic string task
 void periodicStringTask(void *pvParameters) {
-  const char *message = "Periodic_String\n ";
+  const char *message = "Periodic_String ";
 
  for(;;) {
     // Send periodic string to consumer task
@@ -159,12 +168,12 @@ void periodicStringTask(void *pvParameters) {
     // Set periodic string event
     xEventGroupSetBits(eventGroup, EVENT_PERIODIC_STRING);
 
-    vTaskDelay(100);
+    vTaskDelay(PERIODIC_TASK_PERIODICITY);
   }
 }
 // Consumer task
 void consumerTask(void *pvParameters) {
-  const TickType_t xMaxBlockTime = pdMS_TO_TICKS(100);
+  const TickType_t xMaxBlockTime = pdMS_TO_TICKS(PDMS_TICKS);
   const char *receivedMessage;
 
   for(;;) {
@@ -177,33 +186,33 @@ void consumerTask(void *pvParameters) {
     // Handle events
     if (events & EVENT_BUTTON_1_RISING) {
       // Write button 1 rising edge to UART
-  vSerialPutString(button_1_r,17);
+  vSerialPutString(button_1_r,MESSAGE_SIZE);
 }
     if (events & EVENT_BUTTON_1_FALLING) {
       // Write button 1 falling edge to UART   
 			/* Write to UART */
-  vSerialPutString(button_1_f,17);
+  vSerialPutString(button_1_f,MESSAGE_SIZE);
 
     }
     if (events & EVENT_BUTTON_2_RISING) {
       // Write button 2 rising edge to UART
       /* Write to UART */
-			  vSerialPutString(button_2_r,17);
+			  vSerialPutString(button_2_r,MESSAGE_SIZE);
     }
     if (events & EVENT_BUTTON_2_FALLING) {
       // Write button 2 falling edge to UART
       /* Write to UART */
-				  vSerialPutString(button_2_f,17);
+				  vSerialPutString(button_2_f,MESSAGE_SIZE);
     }
     if (events & EVENT_PERIODIC_STRING) {
       // Receive periodic string from mailbox
-      if (xQueueReceive(mailbox, &receivedMessage, 0) == pdTRUE) {
-			  vSerialPutString(receivedMessage,15);
+      if (xQueueReceive(mailbox, &receivedMessage, FIRST_LOCATION) == pdTRUE) {
+			  vSerialPutString(receivedMessage,MESSAGE_SIZE);
 				// Write periodic string to UART
         /* Write to UART */
       }
     }
-      vTaskDelay(50);
+      vTaskDelay(CONSUMER_TASK_PERIODICITY);
 
 	}
 }
